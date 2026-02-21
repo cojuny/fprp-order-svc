@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.100.202:3306/orderdb
+    username: app
+    password: 1q2w3e4r
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
