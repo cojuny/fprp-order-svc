@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:mariadb://192.168.100.202:3306/orderdb
-    username: app
+    username: order_app
     password: 1q2w3e4r
     driver-class-name: org.mariadb.jdbc.Driver
 
