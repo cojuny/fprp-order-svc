@@ -2,6 +2,7 @@ plugins {
 	id 'java'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${dependencyManagementVersion}"
+    id 'com.google.cloud.tools.jib' version "${jibVersion}"
 }
 
 group = 'com.cojuny'
@@ -32,6 +33,26 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre-jammy"
+    }
+    to {
+        image = "${NEXUS_IMAGE_REPO_URL}/docker/${project.name}"
+        tags = ["${version}-${env}"]
+        auth {
+            username = System.getenv("NEXUS_IMAGE_REPO_USER") ?: project.findProperty("NEXUS_IMAGE_REPO_USER") ?: ""
+            password = System.getenv("NEXUS_IMAGE_REPO_PASSWORD") ?: project.findProperty("NEXUS_IMAGE_REPO_PASSWORD") ?: ""
+        }
+    }
+    container {
+        ports = ['8080']
+        user = '1000'
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+    }
+    allowInsecureRegistries=true
 }
 
 tasks.named('test') {
