@@ -37,10 +37,10 @@ dependencies {
 
 jib {
     from {
-        image = "eclipse-temurin:21-jre-jammy"
+        image = "${NEXUS_IMAGE_REPO_URL}/eclipse-temurin:21-jre-jammy"
     }
     to {
-        image = "${NEXUS_IMAGE_REPO_URL}/docker/${project.name}"
+        image = "${NEXUS_IMAGE_REPO_URL}/${project.name}"
         tags = ["${version}-${env}"]
         auth {
             username = System.getenv("NEXUS_IMAGE_REPO_USER") ?: project.findProperty("NEXUS_IMAGE_REPO_USER") ?: ""
@@ -50,9 +50,8 @@ jib {
     container {
         ports = ['8080']
         user = '1000'
-        creationTime = 'USE_CURRENT_TIMESTAMP'
+        creationTime = 'EPOCH'
     }
-    allowInsecureRegistries=true
 }
 
 tasks.named('test') {
